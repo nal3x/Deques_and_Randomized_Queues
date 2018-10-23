@@ -96,10 +96,31 @@ public class Deque<Item> implements Iterable<Item> { // 16 bytes object overhead
     }
 
     public Iterator<Item> iterator() { // return an iterator over items in order from front to end
-        return null;
+        return new DequeIterator() {
+        };
+    }
+    private class DequeIterator implements Iterator<Item> {
+        private Node current = first;
+        public boolean hasNext() {
+            return current != null; // false after current has moved from last node
+        }
+
+        @Override
+        public Item next() {
+            if (current == null) throw new java.util.NoSuchElementException();
+            Item item = current.item;
+            current = current.next; // current == null when last item is returned
+            return item;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
     }
 
-    public static void main(String[] args) { // unit testing (optional)
+    public static void main(String[] args) { // test client (optional)
         Deque<Integer> myDeque = new Deque<>();
 
         myDeque.addFirst(2);
