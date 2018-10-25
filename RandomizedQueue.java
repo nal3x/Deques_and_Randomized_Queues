@@ -64,7 +64,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private void resize(int capacity) {
-        Item[] copy = (Item[])new Object[capacity];
+        Item[] copy = (Item[]) new Object[capacity];
         for (int i = 0; i < n; i++) {
             copy[i] = items[i];
         }
@@ -77,7 +77,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         private int index;
 
         public RQIterator() { // inner class constructor
-            shuffledArray = (Item[])new Object[size()];
+            shuffledArray = (Item[]) new Object[size()];
             for (int i = 0; i < size(); i++) {
                 shuffledArray[i] = items[i]; // array copy to achieve independence of iterators
             }
