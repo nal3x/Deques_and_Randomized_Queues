@@ -29,9 +29,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
 
-    // public int itemsSize() { // used only for testing resizing of array
-    //     return items.length;
-    // }
+    public int itemsSize() { // used only for testing resizing of array
+        return items.length;
+    }
 
     public void enqueue(Item item) { // add the item
         if (item == null) throw new IllegalArgumentException();
