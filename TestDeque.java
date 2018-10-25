@@ -90,14 +90,7 @@ public class TestDeque {
         for (int i : myDequeu) {
             System.out.println(i); // no more items to return
         }
-
-
-
-
-
-
     }
-
 
     public static void main(String[] args) {
         // dequeAsStack();

@@ -1,21 +1,20 @@
 import java.util.Iterator;
 
 /**
- *  By using a linked list for our implementation of the deque, we achieve the worst-case
- *  performance requirements. The removeLast operation requires knowledge of the previous node
- *  without iterating over all nodes from the beginning in order to check which node is previous
- *  from last. This is why we use the previous Node in our Node inner class. This makes our deque
- *  a double-linked list. Memory requirement for ~48 N bytes requirement still satisfied. We keep
- *  track of the size with an integer in order to satisfy the worst-case performance requirements
- *  for all operations (we would have to iterate again over all nodes and count).
+ *  Linked list deque implementation with constant worst-case time for all operations. The
+ *  removeLast operation requires knowledge of the previous node in order to avoid iteration over
+ *  all nodes to check which node is previous from last. Use of previous Node makes the deque a
+ *  double-linked list. Memory requirement for ~48 N bytes requirement is satisfied.
+ *  Keeping track of the size of the deque satisfies the worst-case performance requirement
+ *  for all operations.
  */
 
 
 
-public class Deque<Item> implements Iterable<Item> { // 16 bytes object overhead + 4 padding
+public class Deque<Item> implements Iterable<Item> {
 
-    private Node first, last; // 8 + 8 bytes
-    private int size; // 4 bytes
+    private Node first, last;
+    private int size;
 
     private class Node {
         Item item;
@@ -24,7 +23,6 @@ public class Deque<Item> implements Iterable<Item> { // 16 bytes object overhead
     }
 
     public Deque() { // construct an empty deque
-
     }
 
     public boolean isEmpty() { // is the deque empty?
@@ -42,23 +40,19 @@ public class Deque<Item> implements Iterable<Item> { // 16 bytes object overhead
         first.item = item;
         first.next = oldfirst; // becomes null for a previously empty deque
         first.previous = null; // redundant
-
         if (first.next == null) { // oldfirst was null, ie we had an empty deque
             last = first;
         } else {
-            oldfirst.previous = first; //
+            oldfirst.previous = first;
         }
         size++;
     }
 
-    public Item removeFirst() { // remove and return the item from the front == stack pop
+    public Item removeFirst() { // remove and return the item from the front, like stack pop/dequeue
         if (isEmpty()) throw new java.util.NoSuchElementException();
         Item item = first.item;
-        // if (first.next == null) { // there is only one node in the deque
-        //     last = null;
-        // }
-        first = first.next; // correctly becomes null for if deque gets emptied
-        if (isEmpty()) {
+        first = first.next; // correctly becomes null for if deque contained one node
+        if (isEmpty()) { // see above
             last = null;
         } else {
             first.previous = null;
@@ -67,7 +61,7 @@ public class Deque<Item> implements Iterable<Item> { // 16 bytes object overhead
         return item;
     }
 
-    public void addLast(Item item) { // add the item to the end == linked list enqueue
+    public void addLast(Item item) { // add the item to the end, like enqueue
         if (item == null) throw new IllegalArgumentException();
         Node oldLast = last;
         last = new Node();
@@ -89,16 +83,16 @@ public class Deque<Item> implements Iterable<Item> { // 16 bytes object overhead
         if (last == null) {
             first = null;
         } else {
-            last.next = null; // old last can be GC collected, avoid loitering
+            last.next = null; // old last can be GC collected, avoids loitering
         }
         size--;
         return item;
     }
 
     public Iterator<Item> iterator() { // return an iterator over items in order from front to end
-        return new DequeIterator() {
-        };
+        return new DequeIterator();
     }
+
     private class DequeIterator implements Iterator<Item> {
         private Node current = first;
         public boolean hasNext() {
